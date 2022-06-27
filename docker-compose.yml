@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  products_management:
+    container_name: products_management
+    image: api_sprint_4
+    build: .
+    ports:
+      - 3000:3000
+    environment:
+      - DB_USER=yasmin
+      - DB_HOST=db
+      - DB=products_management
+      - DB_PASSWORD=1234
+      - DB_PORT=5432
+    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; yarn start'
+    depends_on:
+      - db
+  db:
+    container_name: db
+    image: postgres:12
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=yasmin
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=products_management
+    volumes:
+      - ./create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
