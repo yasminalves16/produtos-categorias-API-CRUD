@@ -1,16 +1,17 @@
-import database from '../../database';
+import database from "../../database";
 
 const listProductsServices = async () => {
-    try {
-        const res = await database.query(
-            'SELECT * FROM products'
-        )
+  try {
+    const res = await database.query("SELECT * FROM products");
 
-        return res.rows
-        
-    } catch (err) {
-        throw new Error(err)
+    if (res.rows.length === 0) {
+      throw new Error("No products found.");
     }
-}
 
-export default listProductsServices
+    return res.rows;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+export default listProductsServices;
